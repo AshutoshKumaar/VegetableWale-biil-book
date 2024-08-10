@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import {
   Drawer as UIDrawer,
@@ -41,7 +41,6 @@ export default function MyDrawer() {
     units: "",
   });
 
-  // New state for finalData
   const [finalData, setFinalData] = useState(null);
 
   const handleClientDetailChange = (e) => {
@@ -68,8 +67,19 @@ export default function MyDrawer() {
   };
 
   const addProduct = () => {
-    setProducts((prevProducts) => [...prevProducts, currentProduct]);
-    setCurrentProduct({ productName: "", quantity: "", rate: "", units: "" });
+    // Validate product details before adding
+    if (
+      currentProduct.productName &&
+      currentProduct.quantity &&
+      currentProduct.rate &&
+      currentProduct.units
+    ) {
+      setProducts((prevProducts) => [...prevProducts, currentProduct]);
+      setCurrentProduct({ productName: "", quantity: "", rate: "", units: "" });
+    } else {
+      // Handle invalid product details
+      alert("Please fill in all product details.");
+    }
   };
 
   const clickTabChange = () => {
@@ -81,12 +91,23 @@ export default function MyDrawer() {
   };
 
   const handleSubmit = () => {
-    const data = {
-      clientDetails,
-      products,
-    };
-    setFinalData(data); // Set the finalData state
-    setChangeScreen(false);
+    // Validate client details before submitting
+    if (
+      clientDetails.clientName &&
+      clientDetails.orderNumber &&
+      clientDetails.date &&
+      products.length > 0
+    ) {
+      const data = {
+        clientDetails,
+        products,
+      };
+      setFinalData(data); // Set the finalData state
+      setChangeScreen(false);
+    } else {
+      // Handle invalid client details or empty products list
+      alert("Please fill in all client details and add at least one product.");
+    }
   };
 
   return (
@@ -234,12 +255,16 @@ export default function MyDrawer() {
                   </Button>
                 </div>
                 <ul className="mx-4 my-1 h-[50px] overflow-y-auto">
-                  {products.map((product, index) => (
-                    <li
-                      className="text-lg mb-2 bg-indigo-300"
-                      key={index}
-                    >{`${product.productName} = ${product.quantity} ${product.units} x ${product.rate}`}</li>
-                  ))}
+                  {products.length > 0 ? (
+                    products.map((product, index) => (
+                      <li
+                        className="text-lg mb-2 bg-indigo-300"
+                        key={index}
+                      >{`${product.productName} = ${product.quantity} ${product.units} x ${product.rate}`}</li>
+                    ))
+                  ) : (
+                    <li className="text-lg mb-2 text-center text-gray-500">No products added</li>
+                  )}
                 </ul>
               </div>
             )}
@@ -272,7 +297,7 @@ export default function MyDrawer() {
           </DrawerContent>
         </UIDrawer>
       ) : (
-        <Billbook finalData={finalData} /> // Pass finalData as a prop to Billbook
+        <Billbook finalData={finalData} />
       )}
       <Footer />
     </div>

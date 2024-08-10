@@ -16,8 +16,8 @@ function Billbook({ finalData }) {
     window.location.reload(); // Refresh the page to restore the original content
   };
 
- // Construct BillbookData from finalData
- const BillbookData = {
+  // Construct BillbookData from finalData
+  const BillbookData = {
     ClientName: finalData.clientDetails.clientName,
     Date: finalData.clientDetails.date || "N/A",
     orderNumber: finalData.clientDetails.orderNumber || "N/A",
@@ -28,6 +28,10 @@ function Billbook({ finalData }) {
       Unit: product.units,
     })),
   };
+
+  // Fixed delivery charge
+  const deliveryCharge = 10;
+
   // Calculate total amounts and grand total
   const itemListWithTotal = BillbookData.itemList.map((item) => {
     const isGram = item.Unit === 'g';
@@ -37,6 +41,7 @@ function Billbook({ finalData }) {
   });
 
   const grandTotal = itemListWithTotal.reduce((sum, item) => sum + item.TotalAmount, 0);
+  const totalWithDelivery = grandTotal + deliveryCharge;
 
   return (
     <div className="w-full md:w-[600px] bg-[#90EE90] mx-auto p-3 rounded-md shadow-lg">
@@ -79,12 +84,16 @@ function Billbook({ finalData }) {
                   <span className="font-bold">x</span>&nbsp;
                   <span className="font-medium">{item.Rate}</span>
                 </div>
-                <span className="font-medium w-[30%] text-right text-blue-800">= {item.TotalAmount}</span>
+                <span className="font-medium w-[30%] text-right text-blue-800">= {item.TotalAmount.toFixed(2)}</span>
               </div>
             ))}
           </div>
           <div className="flex justify-end items-center p-3 border-t-2 border-blue-300 bg-blue-100">
-            <span className="font-bold text-blue-900 text-lg">Grand Total &nbsp; &nbsp; &nbsp;:- &nbsp; &nbsp; &nbsp;{grandTotal}</span>
+            <div className="flex flex-col w-full">
+              <p className="font-bold text-blue-900 text-lg flex flex-row justify-between items-center"><span>Total Amount:</span><span>{grandTotal.toFixed(2)}</span></p>
+              <p className="font-bold text-blue-900 text-lg flex flex-row justify-between items-center"><span>Delivery Charge:</span><span>{deliveryCharge.toFixed(2)}</span></p>
+              <p className="font-bold text-blue-900 text-lg flex flex-row justify-between items-center"><span>Grand Total:</span><span>{totalWithDelivery.toFixed(2)}</span></p>
+            </div>
           </div>
         </div>
       </div>
