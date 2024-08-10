@@ -1,10 +1,10 @@
-"use client";
+"Use Client"
 import React, { useRef } from 'react';
 
 function Billbook({ finalData }) {
-  if (!finalData) return <p>No data available</p>;
+  const billbookRef = useRef(null); // Initialize useRef outside conditional
 
-  const billbookRef = useRef();
+  if (!finalData) return <p>No data available</p>;
 
   const handlePrint = () => {
     const printContents = billbookRef.current.innerHTML;
@@ -52,7 +52,7 @@ function Billbook({ finalData }) {
         </div>
         <div className="bg-blue-50 p-2 rounded-md shadow-inner mb-4">
           <p className="text-gray-800">
-            <span className="text-[16px] md:text-lg font-semibold">Client&#39;s Name: </span>
+            <span className="text-[16px] md:text-lg font-semibold">Client&apos;s Name: </span>
             <span className="font-[400] text-sm md:text-lg md:font-medium ml-1">{BillbookData.ClientName}</span>
           </p>
           <div className="flex justify-between items-center text-gray-800 mt-2">
