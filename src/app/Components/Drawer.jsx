@@ -111,7 +111,7 @@ export default function MyDrawer() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-full">
       {changeScreen ? (
         <UIDrawer>
           {/* Section-1 */}
@@ -254,7 +254,7 @@ export default function MyDrawer() {
                     Add Product
                   </Button>
                 </div>
-                <ul className="mx-4 my-1 h-[50px] overflow-y-auto">
+                <ul className="mx-4 my-1 h-[100px] overflow-y-auto">
                   {products.length > 0 ? (
                     products.map((product, index) => (
                       <li
